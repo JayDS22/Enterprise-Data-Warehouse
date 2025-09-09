@@ -1,0 +1,105 @@
+# Enterprise Data Warehouse - Data Catalog Configuration
+# This file defines the structure and metadata for all fact and dimension tables
+
+version: "1.0"
+last_updated: "2024-01-01"
+metadata:
+  owner: "data_engineering_team"
+  contact: "data-engineering@company.com"
+  documentation_url: "https://docs.company.com/data-warehouse"
+
+# =============================================================================
+# FACT TABLES CONFIGURATION (32 tables)
+# =============================================================================
+
+fact_tables:
+  
+  # Sales and Revenue Facts
+  fact_sales_daily:
+    description: "Daily sales transactions and revenue metrics across all channels"
+    source_table: "staging_sales_transactions"
+    business_keys: ["order_id", "order_line_id"]
+    unique_key: ["order_id", "order_line_id", "transaction_date"]
+    cluster_by: ["transaction_date", "customer_key", "product_key"]
+    tags: ["sales", "revenue", "daily", "critical"]
+    grain: "daily"
+    measures:
+      - column: "quantity_sold"
+        name: "quantity"
+        description: "Number of units sold"
+        data_type: "integer"
+        aggregation: "sum"
+        required: true
+      - column: "gross_amount_usd"
+        name: "gross_revenue"
+        description: "Total revenue before discounts in USD"
+        data_type: "decimal(15,2)"
+        aggregation: "sum"
+        required: true
+      - column: "discount_amount_usd"
+        name: "discount_amount"
+        description: "Total discount applied in USD"
+        data_type: "decimal(15,2)"
+        aggregation: "sum"
+        required: false
+      - column: "tax_amount_usd"
+        name: "tax_amount"
+        description: "Tax amount in USD"
+        data_type: "decimal(15,2)"
+        aggregation: "sum"
+        required: false
+    dimension_references:
+      - column: "customer_id"
+        name: "customer"
+      - column: "product_id"
+        name: "product"
+      - column: "transaction_date"
+        name: "date"
+      - column: "sales_rep_id"
+        name: "sales_rep"
+      - column: "store_id"
+        name: "store"
+    derived_measures:
+      - name: "net_revenue"
+        calculation: "gross_revenue - coalesce(discount_amount, 0)"
+      - name: "average_unit_price"
+        calculation: "case when quantity > 0 then gross_revenue / quantity else 0 end"
+      - name: "discount_rate"
+        calculation: "case when gross_revenue > 0 then discount_amount / gross_revenue else 0 end"
+
+  fact_customer_behavior:
+    description: "Customer interaction and digital behavior metrics"
+    source_table: "staging_customer_events"
+    business_keys: ["customer_id", "session_id", "event_id"]
+    unique_key: ["customer_id", "session_id", "event_id"]
+    tags: ["customer", "behavior", "digital", "analytics"]
+    measures:
+      - column: "page_views"
+        name: "page_views"
+        description: "Number of pages viewed in session"
+        data_type: "integer"
+        aggregation: "sum"
+        required: true
+      - column: "session_duration_seconds"
+        name: "session_duration"
+        description: "Session length in seconds"
+        data_type: "integer"
+        aggregation: "avg"
+        required: true
+      - column: "bounce_flag"
+        name: "is_bounce"
+        description: "Single page session indicator"
+        data_type: "boolean"
+        aggregation: "sum"
+        required: false
+    dimension_references:
+      - column: "customer_id"
+        name: "customer"
+      - column: "event_date"
+        name: "date"
+      - column: "device_type"
+        name: "device"
+      - column: "traffic_source"
+        name: "traffic_source"
+
+  fact_inventory_movements:
