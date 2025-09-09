@@ -444,4 +444,183 @@ IND,India,Asia"""
         """Create sample .env file"""
         logger.info("Creating sample .env file...")
         
-        env_file_
+        env_file_path = self.project_root / '.env.example'
+        
+        env_content = """# Snowflake Connection Configuration
+SNOWFLAKE_ACCOUNT=your_account.region.provider
+SNOWFLAKE_USER=your_username
+SNOWFLAKE_PASSWORD=your_password
+SNOWFLAKE_ROLE=TRANSFORMER
+SNOWFLAKE_WAREHOUSE=COMPUTE_WH
+
+# Environment-specific databases
+SNOWFLAKE_DATABASE_DEV=DEV_DW
+SNOWFLAKE_DATABASE_TEST=TEST_DW
+SNOWFLAKE_DATABASE_PROD=PROD_DW
+
+# Default schema
+SNOWFLAKE_SCHEMA=PUBLIC
+
+# DBT Configuration
+DBT_PROFILES_DIR=~/.dbt
+DBT_TARGET=dev
+
+# Data Quality Configuration
+DATA_QUALITY_THRESHOLD=0.95
+ENABLE_DATA_LINEAGE=true
+ENABLE_PERFORMANCE_MONITORING=true
+
+# Airflow Configuration (if using)
+AIRFLOW_HOME=~/airflow
+AIRFLOW_CONN_SNOWFLAKE_DEFAULT=snowflake://user:password@account/database?warehouse=warehouse&role=role
+
+# Logging
+LOG_LEVEL=INFO
+"""
+        
+        if not env_file_path.exists():
+            with open(env_file_path, 'w') as f:
+                f.write(env_content)
+            logger.info("Created .env.example file")
+            logger.info("Please copy .env.example to .env and update with your credentials")
+        else:
+            logger.info(".env.example already exists")
+    
+    def validate_setup(self) -> None:
+        """Validate the complete setup"""
+        logger.info("Validating setup...")
+        
+        validation_checks = [
+            (self.project_root / 'dbt_project.yml', "DBT project file"),
+            (self.dbt_profiles_dir / 'profiles.yml', "DBT profiles file"),
+            (self.project_root / 'models', "Models directory"),
+            (self.project_root / 'macros', "Macros directory"),
+            (self.project_root / 'dbt_packages', "DBT packages directory")
+        ]
+        
+        all_valid = True
+        
+        for path, description in validation_checks:
+            if path.exists():
+                logger.info(f"✓ {description} exists")
+            else:
+                logger.error(f"✗ {description} missing")
+                all_valid = False
+        
+        if all_valid:
+            logger.info("✓ Setup validation completed successfully")
+        else:
+            logger.error("✗ Setup validation failed")
+            sys.exit(1)
+    
+    def print_next_steps(self) -> None:
+        """Print next steps for the user"""
+        logger.info("\n" + "="*60)
+        logger.info("DBT ENVIRONMENT SETUP COMPLETED SUCCESSFULLY!")
+        logger.info("="*60)
+        
+        print(f"""
+Next Steps:
+
+1. 📝 Configure Credentials:
+   - Copy .env.example to .env
+   - Update with your Snowflake credentials
+   - Ensure all required environment variables are set
+
+2. 🚀 Deploy Snowflake Objects:
+   python scripts/deployment/deploy_snowflake_objects.py --env {self.environment}
+
+3. 🔧 Generate Models (if skipped):
+   python scripts/utilities/generate_fact_dimension_models.py
+
+4. 📊 Run Your First DBT Commands:
+   dbt seed              # Load reference data
+   dbt run               # Run all models
+   dbt test              # Run data quality tests
+   dbt docs generate     # Generate documentation
+   dbt docs serve        # View documentation
+
+5. 📈 Monitor Data Quality:
+   - Check audit tables in {self.environment.upper()}_DW.AUDIT schema
+   - Review data quality dashboard views
+   - Set up alerting for quality issues
+
+6. 🔄 Setup Orchestration (Optional):
+   python scripts/deployment/configure_airflow.py --env {self.environment}
+
+7. 📚 Explore Documentation:
+   - View generated docs with 'dbt docs serve'
+   - Check documentation/ folder for architecture guides
+   - Review governance/data_catalog.yml for table definitions
+
+Useful Commands:
+   dbt run --select marts.facts          # Run only fact tables
+   dbt run --select marts.dimensions     # Run only dimension tables
+   dbt test --select marts               # Test marts layer
+   dbt run --full-refresh                # Full refresh of incremental models
+   
+Happy Data Engineering! 🎉
+        """)
+    
+    def setup(self, skip_generation: bool = False, skip_run: bool = False) -> None:
+        """Execute complete setup process"""
+        logger.info(f"Starting DBT environment setup for {self.environment.upper()}")
+        
+        try:
+            # Prerequisites and validation
+            self.validate_prerequisites()
+            
+            # Core setup
+            self.create_directory_structure()
+            self.setup_git_ignores()
+            self.create_environment_file()
+            self.setup_dbt_profiles()
+            
+            # DBT-specific setup
+            self.install_dbt_packages()
+            self.generate_models(skip_generation)
+            self.create_sample_seed_data()
+            
+            # Initial validation
+            self.run_initial_dbt_commands(skip_run)
+            self.generate_documentation()
+            
+            # Final validation
+            self.validate_setup()
+            
+            # Success message
+            self.print_next_steps()
+            
+        except Exception as e:
+            logger.error(f"Setup failed: {e}")
+            raise
+
+
+def main():
+    """Main entry point"""
+    parser = argparse.ArgumentParser(description='Setup DBT environment for enterprise data warehouse')
+    parser.add_argument('--env', choices=['dev', 'test', 'prod'], default='dev',
+                       help='Target environment for setup')
+    parser.add_argument('--skip-generation', action='store_true',
+                       help='Skip automatic model generation')
+    parser.add_argument('--skip-run', action='store_true',
+                       help='Skip initial DBT run commands')
+    parser.add_argument('--verbose', '-v', action='store_true',
+                       help='Enable verbose logging')
+    
+    args = parser.parse_args()
+    
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
+    
+    try:
+        setup = DBTEnvironmentSetup(args.env)
+        setup.setup(args.skip_generation, args.skip_run)
+        
+    except Exception as e:
+        logger.error(f"Setup script failed: {e}")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
