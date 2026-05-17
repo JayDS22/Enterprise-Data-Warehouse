@@ -1,11 +1,11 @@
 # Enterprise Data Warehouse & ML Platform
 
-## 🚀 Overview
+## Overview
 **High-performance enterprise platform** processing **24B records** with **<60s latency**, **throughput: 100k records/sec**, and **99.8% uptime**. 
 
 Combines comprehensive data warehousing with advanced ML capabilities delivering **91.2% model accuracy**, **precision: 0.89**, **recall: 0.86**, and **real-time inference serving 300K+ predictions/hour**.
 
-## 🏗️ Architecture
+## Architecture
 
 ### Data Warehouse Layer
 - **32 Fact Tables** with incremental processing
@@ -21,7 +21,7 @@ Combines comprehensive data warehousing with advanced ML capabilities delivering
 - **Advanced Monitoring** with 95% drift detection accuracy
 - **MLflow** experiment tracking and model versioning
 
-## 📊 Performance Metrics
+## Performance Metrics
 
 ### Data Processing
 - **Volume**: 24B records processing capability
@@ -38,32 +38,32 @@ Combines comprehensive data warehousing with advanced ML capabilities delivering
 - **Inference Throughput**: 300K+ predictions/hour
 - **Drift Detection**: 95% accuracy
 
-## 🎯 Key Features
+## Key Features
 
 ### Enterprise Data Warehouse
-✅ **Automated Model Generation** - Generate 160 tables from YAML config  
-✅ **Real-time Data Quality** - Comprehensive testing framework  
-✅ **SCD Type 2 Implementation** - Full historical tracking  
-✅ **Multi-Environment Support** - Dev/Test/Prod configurations  
-✅ **Performance Optimization** - Clustering and incremental strategies  
-✅ **Data Lineage Tracking** - Column-level lineage mapping  
+ **Automated Model Generation** - Generate 160 tables from YAML config  
+ **Real-time Data Quality** - Comprehensive testing framework  
+ **SCD Type 2 Implementation** - Full historical tracking  
+ **Multi-Environment Support** - Dev/Test/Prod configurations  
+ **Performance Optimization** - Clustering and incremental strategies  
+ **Data Lineage Tracking** - Column-level lineage mapping  
 
 ### ML Platform
-✅ **Automated Feature Engineering** - 1000+ features with time-series analysis  
-✅ **Hyperparameter Optimization** - Optuna-based optimization  
-✅ **Ensemble Training** - XGBoost + Random Forest + Neural Networks  
-✅ **Real-time Inference** - FastAPI service with Redis caching  
-✅ **Drift Detection** - Advanced statistical monitoring  
-✅ **MLOps Pipeline** - Full CI/CD with model versioning  
+ **Automated Feature Engineering** - 1000+ features with time-series analysis  
+ **Hyperparameter Optimization** - Optuna-based optimization  
+ **Ensemble Training** - XGBoost + Random Forest + Neural Networks  
+ **Real-time Inference** - FastAPI service with Redis caching  
+ **Drift Detection** - Advanced statistical monitoring  
+ **MLOps Pipeline** - Full CI/CD with model versioning  
 
 ### Monitoring & Observability
-✅ **Performance Monitoring** - Real-time model metrics  
-✅ **System Health** - Resource and infrastructure monitoring  
-✅ **Business Impact** - ROI and value tracking  
-✅ **Automated Alerting** - Slack, email, webhook notifications  
-✅ **Prometheus Metrics** - Comprehensive metrics collection  
+ **Performance Monitoring** - Real-time model metrics  
+ **System Health** - Resource and infrastructure monitoring  
+ **Business Impact** - ROI and value tracking  
+ **Automated Alerting** - Slack, email, webhook notifications  
+ **Prometheus Metrics** - Comprehensive metrics collection  
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Complete Platform Setup
 ```bash
@@ -115,11 +115,11 @@ dbt test --target prod
 dbt docs serve
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 enterprise-data-warehouse/
-├── 📊 Data Warehouse Core
+├──  Data Warehouse Core
 │   ├── dbt_project.yml              # DBT configuration
 │   ├── models/                      # DBT models
 │   │   ├── staging/                 # Raw data staging
@@ -129,7 +129,7 @@ enterprise-data-warehouse/
 │   ├── tests/                       # Data quality tests
 │   └── governance/                  # Data catalog & lineage
 │
-├── 🤖 ML Platform
+├──  ML Platform
 │   ├── core/                        # Core ML framework
 │   │   └── ml_pipeline_framework.py # High-performance ML pipeline
 │   ├── feature_store/               # Feature engineering
@@ -141,18 +141,18 @@ enterprise-data-warehouse/
 │   └── monitoring/                  # ML monitoring
 │       └── ml_monitoring_system.py  # Comprehensive monitoring
 │
-├── 🚀 Infrastructure & Deployment
+├──  Infrastructure & Deployment
 │   ├── scripts/deployment/          # Deployment automation
 │   ├── airflow_dags/               # Orchestration workflows
 │   └── run_enterprise_dw.sh       # Master setup script
 │
-└── 📚 Documentation
+└──  Documentation
     ├── README.md                   # Main documentation
     ├── documentation/              # Architecture guides
     └── governance/                 # Data governance
 ```
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Configuration
 ```bash
@@ -189,7 +189,7 @@ models:
         +post_hook: "{{ log_scd_stats() }}"
 ```
 
-## 📊 Usage Examples
+## Usage Examples
 
 ### Data Warehouse Operations
 ```bash
@@ -259,7 +259,7 @@ dashboard = await monitoring.get_monitoring_dashboard()
 print(f"System health: {dashboard['system_health']['status']}")
 ```
 
-## 🎯 Performance Benchmarks
+## Performance Benchmarks
 
 ### Data Processing Benchmarks
 ```bash
@@ -267,9 +267,9 @@ print(f"System health: {dashboard['system_health']['status']}")
 python scripts/utilities/performance_test.py --records 1000000
 
 Results:
-✅ Throughput: 125,000 records/sec (Target: 100,000)
-✅ Latency: 45s for 1M records (Target: <60s)
-✅ Memory Usage: 65% (Target: <80%)
+ Throughput: 125,000 records/sec (Target: 100,000)
+ Latency: 45s for 1M records (Target: <60s)
+ Memory Usage: 65% (Target: <80%)
 ```
 
 ### ML Performance Benchmarks  
@@ -278,14 +278,14 @@ Results:
 python ml_platform/inference/realtime_inference_service.py test
 
 Results:
-🚀 ML Inference Performance Test Results:
-✅ Throughput: 315,000 predictions/hour (Target: 300,000)
-✅ Latency: 85ms (Target: <100ms)
-✅ Model Accuracy: 91.3% (Target: 91.2%)
-✅ Drift Detection: 95.2% accuracy (Target: 95%)
+ ML Inference Performance Test Results:
+ Throughput: 315,000 predictions/hour (Target: 300,000)
+ Latency: 85ms (Target: <100ms)
+ Model Accuracy: 91.3% (Target: 91.2%)
+ Drift Detection: 95.2% accuracy (Target: 95%)
 ```
 
-## 🏛️ Data Governance
+## Data Governance
 
 ### Data Catalog
 Comprehensive metadata management:
@@ -307,7 +307,7 @@ Comprehensive metadata management:
 - **Access Controls** with role-based permissions
 - **Audit Logging** for all data access
 
-## 🔍 Monitoring & Observability
+## Monitoring & Observability
 
 ### ML Model Monitoring
 - **Performance Tracking**: Accuracy, precision, recall
@@ -336,7 +336,7 @@ alerts:
     memory_threshold: 85%
 ```
 
-## 🚀 Advanced Features
+## Advanced Features
 
 ### Automated ML Pipeline
 ```python
@@ -389,7 +389,7 @@ time_series_features = await feature_engine.extract_time_series_features(
 ) }}
 ```
 
-## 🛠️ Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -430,7 +430,7 @@ dbt source freshness
 python scripts/utilities/data_profiling.py --anomaly-detection
 ```
 
-## 📈 Scaling & Optimization
+## Scaling & Optimization
 
 ### Horizontal Scaling
 - **Multi-warehouse** deployment for compute isolation
@@ -444,7 +444,7 @@ python scripts/utilities/data_profiling.py --anomaly-detection
 - **Incremental models** for efficient updates
 - **Feature caching** with Redis for low latency
 
-## 🤝 Contributing
+## Contributing
 
 ### Development Setup
 ```bash
@@ -468,7 +468,7 @@ flake8 ml_platform/
 3. Update documentation for any changes
 4. Ensure performance benchmarks are met
 
-## 📚 Additional Resources
+## Additional Resources
 
 - [Architecture Design](documentation/architecture_design.md)
 - [Data Dictionary](documentation/data_dictionary.md)
@@ -476,20 +476,20 @@ flake8 ml_platform/
 - [Performance Tuning](documentation/performance_tuning.md)
 - [Monitoring Setup](documentation/monitoring_setup.md)
 
-## 📄 License
+## License
 MIT License - see LICENSE file for details.
 
-## 🏆 Achievements
+## Achievements
 
-- ✅ **91.2% Model Accuracy** achieved
-- ✅ **300K+ Predictions/Hour** serving capacity
-- ✅ **99.8% Uptime** SLA maintained  
-- ✅ **95% Drift Detection** accuracy
-- ✅ **24B Records** processing capability
-- ✅ **<60s Latency** for batch operations
+- **91.2% Model Accuracy** achieved
+- **300K+ Predictions/Hour** serving capacity
+- **99.8% Uptime** SLA maintained  
+- **95% Drift Detection** accuracy
+- **24B Records** processing capability
+- **<60s Latency** for batch operations
 
 ---
 
-**Built with ❤️ for Enterprise Data Engineering & Machine Learning**
+**Built with for Enterprise Data Engineering & Machine Learning**
 
 *Delivering high-performance data platforms that scale from millions to billions of records with enterprise-grade ML capabilities.*
